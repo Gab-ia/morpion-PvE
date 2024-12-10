@@ -1,17 +1,14 @@
-let carres = document.querySelectorAll('.carre');
-let rejouer = document.getElementById('rejouer');
-let titre = document.getElementById('titre');
+const carres = document.querySelectorAll('.carre');
+const rejouer = document.getElementById('rejouer');
+const titre = document.getElementById('titre');
 
 function verif(caseJouees) {
-
     const cells = {};
-
     ['a', 'b', 'c'].forEach(row => {
         for (let col = 1; col <= 3; col++) {
             cells[`${row}${col}`] = document.getElementById(`${row}${col}`);
         }
     });
-
     if (Number(a1.dataset.click) === Number(a2.dataset.click) && Number(a2.dataset.click) === Number(a3.dataset.click) && Number(a3.dataset.click) === 0 ||
         Number(b1.dataset.click) === Number(b2.dataset.click) && Number(b2.dataset.click) === Number(b3.dataset.click) && Number(b3.dataset.click) === 0 ||
         Number(c1.dataset.click) === Number(c2.dataset.click) && Number(c2.dataset.click) === Number(c3.dataset.click) && Number(c3.dataset.click) === 0 ||
@@ -22,13 +19,18 @@ function verif(caseJouees) {
         Number(a3.dataset.click) === Number(b3.dataset.click) && Number(b3.dataset.click) === Number(c3.dataset.click) && Number(c3.dataset.click) === 0) {
 
         setTimeout(() => {
-            titre.textContent = 'Les croix ont gagnées';
+            titre.textContent = 'Victoire !';
+            lottie.loadAnimation({
+                container: document.getElementById('animation'),
+                renderer: 'svg',
+                loop: false,
+                autoplay: true,
+                path: 'victory.json'
+            });
         }, 400);
-
         carres.forEach(carre => {
             carre.style.pointerEvents = 'none';
         })
-
 
     } else if (Number(a1.dataset.click) === Number(a2.dataset.click) && Number(a2.dataset.click) === Number(a3.dataset.click) && Number(a3.dataset.click) === 1 ||
         Number(b1.dataset.click) === Number(b2.dataset.click) && Number(b2.dataset.click) === Number(b3.dataset.click) && Number(b3.dataset.click) === 1 ||
@@ -40,7 +42,7 @@ function verif(caseJouees) {
         Number(a3.dataset.click) === Number(b3.dataset.click) && Number(b3.dataset.click) === Number(c3.dataset.click) && Number(c3.dataset.click) === 1) {
 
         setTimeout(() => {
-            titre.textContent = 'Les ronds ont gagnés';
+            titre.textContent = 'Défaite ...';
         }, 500);
 
         carres.forEach(carre => {
@@ -48,10 +50,9 @@ function verif(caseJouees) {
         })
 
     } else if (caseJouees.length === 8) {
-        titre.textContent = 'Égalité';
+        titre.textContent = 'Égalité !';
     }
 }
-
 function ordinateur() {
     if (Number(a1.dataset.click) === Number(a2.dataset.click) && Number(a2.dataset.click) === Number(a3.dataset.click) ||
         Number(b1.dataset.click) === Number(b2.dataset.click) && Number(b2.dataset.click) === Number(b3.dataset.click) ||
@@ -60,42 +61,29 @@ function ordinateur() {
         Number(c1.dataset.click) === Number(b2.dataset.click) && Number(b2.dataset.click) === Number(a3.dataset.click) ||
         Number(a1.dataset.click) === Number(b1.dataset.click) && Number(b1.dataset.click) === Number(c1.dataset.click) ||
         Number(a2.dataset.click) === Number(b2.dataset.click) && Number(b2.dataset.click) === Number(c2.dataset.click) ||
-        Number(a3.dataset.click) === Number(b3.dataset.click) && Number(b3.dataset.click) === Number(c3.dataset.click)) {
-
-    } else {
-
-        let carreLibre = document.querySelectorAll(".carre:not([data-click])");
-        let choice = Math.floor(Math.random() * carreLibre.length);
-        let carreChoisi = carreLibre[choice];
-
+        Number(a3.dataset.click) === Number(b3.dataset.click) && Number(b3.dataset.click) === Number(c3.dataset.click)) { } else {
+        const carreLibre = document.querySelectorAll(".carre:not([data-click])");
+        const choice = Math.floor(Math.random() * carreLibre.length);
+        const carreChoisi = carreLibre[choice];
         carreChoisi.style.backgroundPosition = 'right';
         carreChoisi.dataset.click = 1;
         carreChoisi.style.pointerEvents = "none";
-
     }
 }
-
 carres.forEach(carre => {
-
     carre.addEventListener('click', () => {
-
-        let caseJouees = document.querySelectorAll("[data-click]");
-
+        const caseJouees = document.querySelectorAll("[data-click]");
         carre.style.backgroundPosition = 'center';
         carre.dataset.click = 0;
         carre.style.pointerEvents = "none";
-
         setTimeout(() => {
             ordinateur()
         }, 500);
-
         setTimeout(() => {
             verif(caseJouees);
         }, 500);
-
     })
 });
-
 carres.forEach(carre => {
     rejouer.addEventListener('click', () => {
         titre.textContent = 'Super Morpion';
